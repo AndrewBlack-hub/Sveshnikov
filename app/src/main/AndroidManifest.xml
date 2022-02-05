@@ -10,7 +10,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.TinkoffApp">
 
-        <activity android:name=".presentation.DevelopersLifeActivity"
+        <activity android:name="com.example.tinkoffapp.features.presentation.DevelopersLifeActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

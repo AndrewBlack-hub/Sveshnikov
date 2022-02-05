@@ -1,4 +1,4 @@
-package com.example.tinkoffapp.presentation
+package com.example.tinkoffapp.features.presentation
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle

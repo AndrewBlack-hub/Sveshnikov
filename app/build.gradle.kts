@@ -17,6 +17,10 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
+    buildFeatures {
+        viewBinding = true
+    }
+
     buildTypes {
         getByName("release") {
             isMinifyEnabled = false
@@ -54,4 +58,7 @@ dependencies {
     implementation("org.koin:koin-android-viewmodel:2.2.1")
     implementation("org.koin:koin-android-scope:2.2.1")
     implementation("org.koin:koin-androidx-workmanager:2.2.1")
+
+    //binding
+    implementation("com.github.kirich1409:viewbindingpropertydelegate-noreflection:1.4.4")
 }

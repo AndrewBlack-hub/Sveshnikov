@@ -1,5 +1,6 @@
 package com.example.tinkoffapp.di
 
+import com.example.tinkoffapp.features.data.DevsLifeRepository
 import com.example.tinkoffapp.features.domain.DevsLifeUseCase
 import com.example.tinkoffapp.features.presentation.DevsLifeViewModel
 import org.koin.android.viewmodel.dsl.viewModel
@@ -18,6 +19,7 @@ private val loadModules by lazy {
 }
 
 val domainModule = module {
+    single { DevsLifeRepository() }
     single { DevsLifeUseCase(get()) }
 }
 

@@ -1,6 +1,6 @@
-package com.example.tinkoffapp.features.domain
+package com.example.tinkoffapp.features.devsLife.domain
 
-import com.example.tinkoffapp.features.data.DevsLifeRepository
+import com.example.tinkoffapp.features.devsLife.data.DevsLifeRepository
 
 class DevsLifeUseCase(private val repository: DevsLifeRepository) {
 

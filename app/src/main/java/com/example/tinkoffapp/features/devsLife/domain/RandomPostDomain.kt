@@ -1,4 +1,4 @@
-package com.example.tinkoffapp.features.domain
+package com.example.tinkoffapp.features.devsLife.domain
 
 data class RandomPostDomain(
     val id: Int? = null,

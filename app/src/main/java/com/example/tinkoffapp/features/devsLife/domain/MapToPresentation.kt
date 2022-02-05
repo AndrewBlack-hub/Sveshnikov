@@ -1,6 +1,6 @@
-package com.example.tinkoffapp.features.domain
+package com.example.tinkoffapp.features.devsLife.domain
 
-import com.example.tinkoffapp.features.data.model.RandomPostModel
+import com.example.tinkoffapp.features.devsLife.data.model.RandomPostModel
 
 fun RandomPostModel.mapToPresentation(): RandomPostDomain {
     return RandomPostDomain(

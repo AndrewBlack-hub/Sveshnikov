@@ -1,4 +1,4 @@
-package com.example.tinkoffapp.features.data.model
+package com.example.tinkoffapp.features.devsLife.data.model
 
 data class RandomPostModel(
     val id: Int? = null,

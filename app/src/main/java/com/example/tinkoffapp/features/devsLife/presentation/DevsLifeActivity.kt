@@ -1,7 +1,8 @@
-package com.example.tinkoffapp.features.presentation
+package com.example.tinkoffapp.features.devsLife.presentation
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.Toast
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.example.tinkoffapp.R
 import com.example.tinkoffapp.databinding.ActivityDevsLifeBinding
@@ -15,9 +16,21 @@ class DevsLifeActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_devs_life)
-        viewModel.randomPostLiveData.observe(this) {
-            binding.textView.text = it?.description ?: "пусто"
-        }
+        updateUI()
+        loadRandomPost()
+    }
+
+    private fun loadRandomPost() {
         viewModel.getRandomPost()
+    }
+
+    private fun updateUI() {
+        viewModel.randomPostLiveData.observe(this) { data ->
+            if (data != null) {
+                binding.textView.text = data.description
+            } else {
+                Toast.makeText(applicationContext, "Пусто", Toast.LENGTH_SHORT).show()
+            }
+        }
     }
 }

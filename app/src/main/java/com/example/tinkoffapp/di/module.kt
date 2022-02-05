@@ -1,8 +1,8 @@
 package com.example.tinkoffapp.di
 
-import com.example.tinkoffapp.features.data.DevsLifeRepository
-import com.example.tinkoffapp.features.domain.DevsLifeUseCase
-import com.example.tinkoffapp.features.presentation.DevsLifeViewModel
+import com.example.tinkoffapp.features.devsLife.data.DevsLifeRepository
+import com.example.tinkoffapp.features.devsLife.domain.DevsLifeUseCase
+import com.example.tinkoffapp.features.devsLife.presentation.DevsLifeViewModel
 import org.koin.android.viewmodel.dsl.viewModel
 import org.koin.core.context.loadKoinModules
 import org.koin.dsl.module

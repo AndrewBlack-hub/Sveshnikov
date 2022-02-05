@@ -1,6 +1,6 @@
-package com.example.tinkoffapp.features.data
+package com.example.tinkoffapp.features.devsLife.data
 
-import com.example.tinkoffapp.features.data.model.RandomPostModel
+import com.example.tinkoffapp.features.devsLife.data.model.RandomPostModel
 import retrofit2.Response
 import retrofit2.http.GET
 

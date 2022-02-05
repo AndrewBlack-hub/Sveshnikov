@@ -61,4 +61,8 @@ dependencies {
 
     //binding
     implementation("com.github.kirich1409:viewbindingpropertydelegate-noreflection:1.4.4")
+
+    //glide
+    implementation("com.github.bumptech.glide:glide:4.12.0")
+    annotationProcessor("com.github.bumptech.glide:compiler:4.12.0")
 }

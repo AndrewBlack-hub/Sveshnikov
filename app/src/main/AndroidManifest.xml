@@ -14,7 +14,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.TinkoffApp">
 
-        <activity android:name="com.example.tinkoffapp.features.presentation.DevsLifeActivity"
+        <activity android:name="com.example.tinkoffapp.features.devsLife.presentation.DevsLifeActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

@@ -1,2 +1,2 @@
 rootProject.name = "Tinkoff App"
-include ':app'
+include(":app")

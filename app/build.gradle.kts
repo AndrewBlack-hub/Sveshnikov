@@ -48,4 +48,10 @@ dependencies {
     implementation("com.squareup.retrofit2:converter-gson:2.9.0")
     implementation("com.squareup.okhttp3:logging-interceptor:4.9.0")
     implementation("com.squareup.okhttp3:okhttp:4.9.0")
+
+    // Koin
+    implementation("org.koin:koin-android:2.2.1")
+    implementation("org.koin:koin-android-viewmodel:2.2.1")
+    implementation("org.koin:koin-android-scope:2.2.1")
+    implementation("org.koin:koin-androidx-workmanager:2.2.1")
 }

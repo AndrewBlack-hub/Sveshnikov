@@ -10,10 +10,21 @@ import kotlinx.coroutines.launch
 class DevsLifeViewModel(private val useCase: DevsLifeUseCase) : ViewModel() {
     val randomPostLiveData by lazyLiveData<BasePostDomain?>()
     val postsListLiveData by lazyLiveData<List<BasePostDomain>?>()
-    val postsList = mutableListOf<BasePostDomain?>()
+
+    val topList = mutableListOf<BasePostDomain?>()
+    val latestList = mutableListOf<BasePostDomain?>()
+    val hotList = mutableListOf<BasePostDomain?>()
     val randomPostList: MutableList<BasePostDomain?> = mutableListOf()
+
     var position = 0
-    var page = 0
+    var topListPosition = 0
+    var hotListPosition = 0
+    var latestListPosition = 0
+
+    var topPage = 0
+    var hotPage = 0
+    var latestPage = 0
+
     var type = "latest"
 
     fun getRandomPost() {

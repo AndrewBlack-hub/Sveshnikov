@@ -32,7 +32,7 @@ class DevsLifeActivity : AppCompatActivity() {
         setContentView(R.layout.activity_devs_life)
         supportActionBar?.hide()
         observeRandomPost()
-        observePostsList()
+        observePostsList()//По запросу "https://developerslife.ru/hot/0?json=true" приходит пустой список
         initTabs()
         loadPostsList()
         clickListeners()
@@ -40,7 +40,20 @@ class DevsLifeActivity : AppCompatActivity() {
     }
 
     private fun loadPostsList() {
-        viewModel.getPostsList(type = viewModel.type, page = viewModel.page.toString())
+        when (viewModel.type) {
+            LATEST -> {
+                viewModel.getPostsList(type = viewModel.type, page = viewModel.latestPage.toString())
+            }
+            TOP -> {
+                viewModel.getPostsList(type = viewModel.type, page = viewModel.topPage.toString())
+            }
+            HOT -> {
+                viewModel.getPostsList(type = viewModel.type, page = viewModel.hotPage.toString())
+            }
+            else -> {//random
+                loadRandomPost()
+            }
+        }
     }
 
     private fun loadRandomPost() {
@@ -50,12 +63,30 @@ class DevsLifeActivity : AppCompatActivity() {
     private fun observePostsList() {
         viewModel.postsListLiveData.observe(this) { data ->
             if (!data.isNullOrEmpty()) {//Успешный запрос
-                viewModel.postsList.addAll(data)
                 showContentView()
-                updateUi(
-                    description = viewModel.postsList[viewModel.position]?.description,
-                    gifUrl = viewModel.postsList[viewModel.position]?.gifUrl
-                )
+                when (viewModel.type) {
+                    LATEST -> {
+                        viewModel.latestList.addAll(data)
+                        updateUi(
+                            description = viewModel.latestList[viewModel.latestListPosition]?.description,
+                            gifUrl = viewModel.latestList[viewModel.latestListPosition]?.gifUrl
+                        )
+                    }
+                    TOP -> {
+                        viewModel.topList.addAll(data)
+                        updateUi(
+                            description = viewModel.topList[viewModel.topListPosition]?.description,
+                            gifUrl = viewModel.topList[viewModel.topListPosition]?.gifUrl
+                        )
+                    }
+                    HOT -> {
+                        viewModel.hotList.addAll(data)
+                        updateUi(
+                            description = viewModel.hotList[viewModel.hotListPosition]?.description,
+                            gifUrl = viewModel.hotList[viewModel.hotListPosition]?.gifUrl
+                        )
+                    }
+                }
             } else if (data != null && data.isEmpty()) {//data.size == 0
                 //С сервера пришел пустой список
                 binding.errorIc.setImageDrawable(getDrawable(R.drawable.ic_error))
@@ -99,18 +130,54 @@ class DevsLifeActivity : AppCompatActivity() {
         }
         binding.tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab?) {
-                binding.prevPostBtn.visibility = View.INVISIBLE
-                viewModel.postsList.clear()
-                viewModel.position = 0
-                viewModel.page = 0
                 viewModel.type = when (tab?.position) {
                     0 -> LATEST
                     1 -> TOP
                     2 -> HOT //На момент написания по этому запросу приходит пустой список, с остальными все нормально
                     else -> RANDOM
                 }
-                if (viewModel.type != RANDOM) loadPostsList()
-                else loadRandomPost()
+                when (viewModel.type) {
+                    LATEST -> {
+                        if (!viewModel.latestList.isNullOrEmpty())
+                            updateUi(
+                                description = viewModel.latestList[viewModel.latestListPosition]?.description,
+                                gifUrl = viewModel.latestList[viewModel.latestListPosition]?.gifUrl
+                            )
+                        else {
+                            loadPostsList()
+                        }
+                    }
+                    TOP -> {
+                        if (!viewModel.topList.isNullOrEmpty())
+                            updateUi(
+                                description = viewModel.topList[viewModel.topListPosition]?.description,
+                                gifUrl = viewModel.topList[viewModel.topListPosition]?.gifUrl
+                            )
+                        else {
+                            loadPostsList()
+                        }
+                    }
+                    HOT -> {
+                        if (!viewModel.hotList.isNullOrEmpty())
+                            updateUi(
+                                description = viewModel.hotList[viewModel.hotListPosition]?.description,
+                                gifUrl = viewModel.hotList[viewModel.hotListPosition]?.gifUrl
+                            )
+                        else {
+                            loadPostsList()
+                        }
+                    }
+                    RANDOM -> {
+                        if (!viewModel.randomPostList.isNullOrEmpty())
+                            updateUi(
+                                description = viewModel.randomPostList[viewModel.position]?.description,
+                                gifUrl = viewModel.randomPostList[viewModel.position]?.gifUrl
+                            )
+                        else {
+                            loadPostsList()
+                        }
+                    }
+                }
             }
 
             override fun onTabUnselected(tab: TabLayout.Tab?) {
@@ -124,12 +191,29 @@ class DevsLifeActivity : AppCompatActivity() {
     private fun updateUi(description: String?, gifUrl: String?) {
         binding.textView.text = description
         setImageView(gifUrl)
-        if (viewModel.type == RANDOM) {
-            if (viewModel.randomPostList.size > 0 && viewModel.position > 0) binding.prevPostBtn.visibility = View.VISIBLE
-            else binding.prevPostBtn.visibility = View.INVISIBLE
-        } else {
-            if (viewModel.postsList.size > 0 && viewModel.position > 0) binding.prevPostBtn.visibility = View.VISIBLE
-            else binding.prevPostBtn.visibility = View.INVISIBLE
+        showContentView()
+        when (viewModel.type) {
+            LATEST -> {
+                if (viewModel.latestList.size > 0 && viewModel.latestListPosition > 0)
+                    binding.prevPostBtn.visibility = View.VISIBLE
+                else
+                    binding.prevPostBtn.visibility = View.INVISIBLE }
+            TOP -> {
+                if (viewModel.topList.size > 0 && viewModel.topListPosition > 0)
+                    binding.prevPostBtn.visibility = View.VISIBLE
+                else
+                    binding.prevPostBtn.visibility = View.INVISIBLE }
+            HOT -> {
+                if (viewModel.hotList.size > 0 && viewModel.hotListPosition > 0)
+                    binding.prevPostBtn.visibility = View.VISIBLE
+                else
+                    binding.prevPostBtn.visibility = View.INVISIBLE }
+            RANDOM -> {
+                if (viewModel.randomPostList.size > 0 && viewModel.position > 0)
+                    binding.prevPostBtn.visibility = View.VISIBLE
+                else
+                    binding.prevPostBtn.visibility = View.INVISIBLE
+            }
         }
     }
 
@@ -176,8 +260,12 @@ class DevsLifeActivity : AppCompatActivity() {
 
     private fun onClickNext() {
         binding.nextPostBtn.setOnClickListener {
-            if (viewModel.type == RANDOM) onClickNextRandom()
-            else onClickNextForTabs()
+            when (viewModel.type) {
+                LATEST -> { onClickNextLatest() }
+                TOP -> { onClickNextTop() }
+                HOT -> { onClickNextHot() }
+                RANDOM -> { onClickNextRandom() }
+            }
         }
     }
 
@@ -193,40 +281,104 @@ class DevsLifeActivity : AppCompatActivity() {
         showPrevBtnIfNeed()
     }
 
-    private fun showNextPostInCache() {
-        val nextPost =
-            if (viewModel.type == RANDOM) viewModel.randomPostList[viewModel.position + 1]
-            else viewModel.postsList[viewModel.position + 1]
-        updateUi(description = nextPost?.description, gifUrl = nextPost?.gifUrl)
-        viewModel.position++
+    private fun onClickNextTop() {
+        if (viewModel.topListPosition < viewModel.topList.size - 1) {//если позиция != последнему элементу в списке
+            showNextPostInCache()
+        } else {// позиция равна последнему элементу в списке
+            // делаем запрос на новый контент
+            viewModel.topPage++
+            binding.progressBar.visibility = View.VISIBLE
+            viewModel.getPostsList(type = viewModel.type, page = viewModel.topPage.toString())
+            viewModel.topListPosition++
+        }
+        showPrevBtnIfNeed()
     }
 
-    private fun onClickNextForTabs() {
-        if (viewModel.position < viewModel.postsList.size - 1) {
+    private fun showNextPostInCache() {
+        val nextPost = when (viewModel.type) {
+            LATEST -> {
+                viewModel.latestListPosition++
+                viewModel.latestList[viewModel.latestListPosition]
+            }
+            TOP -> {
+                viewModel.topListPosition++
+                viewModel.topList[viewModel.topListPosition]
+            }
+            HOT -> {
+                viewModel.hotListPosition++
+                viewModel.hotList[viewModel.hotListPosition]
+            }
+            else -> {
+                viewModel.position++
+                viewModel.randomPostList[viewModel.position]
+            }
+        }
+        updateUi(description = nextPost?.description, gifUrl = nextPost?.gifUrl)
+    }
+
+    private fun onClickNextLatest() {
+        if (viewModel.latestListPosition < viewModel.latestList.size - 1) {
             showNextPostInCache()
         } else {
-            viewModel.page++
+            viewModel.latestPage++
             binding.progressBar.visibility = View.VISIBLE
-            viewModel.getPostsList(type = viewModel.type, page = viewModel.page.toString())
-            viewModel.position++
+            viewModel.getPostsList(type = viewModel.type, page = viewModel.latestPage.toString())
+            viewModel.latestListPosition++
+        }
+        showPrevBtnIfNeed()
+    }
+
+    private fun onClickNextHot() {
+        if (viewModel.hotListPosition < viewModel.hotList.size - 1) {
+            showNextPostInCache()
+        } else {
+            viewModel.hotPage++
+            binding.progressBar.visibility = View.VISIBLE
+            viewModel.getPostsList(type = viewModel.type, page = viewModel.hotPage.toString())
+            viewModel.hotListPosition++
         }
         showPrevBtnIfNeed()
     }
 
     private fun showPrevBtnIfNeed() {
-        if (viewModel.position > 0) binding.prevPostBtn.visibility = View.VISIBLE
+        when (viewModel.type) {
+            LATEST -> {
+                if (viewModel.latestListPosition > 0) binding.prevPostBtn.visibility = View.VISIBLE
+            }
+            TOP -> {
+                if (viewModel.topListPosition > 0) binding.prevPostBtn.visibility = View.VISIBLE
+            }
+            HOT -> {
+                if (viewModel.hotListPosition > 0) binding.prevPostBtn.visibility = View.VISIBLE
+            }
+            else -> {//random
+                if (viewModel.position > 0) binding.prevPostBtn.visibility = View.VISIBLE
+            }
+        }
     }
 
     private fun onClickPrev() {
         binding.prevPostBtn.setOnClickListener {
-            if (viewModel.position > 0) {
-                val prevPost =
-                    if (viewModel.type == RANDOM) viewModel.randomPostList[viewModel.position - 1]
-                    else viewModel.postsList[viewModel.position - 1]
-                updateUi(description = prevPost?.description, gifUrl = prevPost?.gifUrl)
-                viewModel.position--
+            val prevPost = when (viewModel.type) {
+                LATEST -> {
+                    viewModel.latestListPosition--
+                    viewModel.latestList[viewModel.latestListPosition]
+                }
+                TOP -> {
+                    viewModel.topListPosition--
+                    viewModel.topList[viewModel.topListPosition]
+                }
+                HOT -> {
+                    viewModel.hotListPosition--
+                    viewModel.hotList[viewModel.hotListPosition]
+                }
+                else -> {//random
+                    viewModel.position--
+                    viewModel.randomPostList[viewModel.position]
+                }
             }
-            if (viewModel.position == 0) binding.prevPostBtn.visibility = View.INVISIBLE
+            updateUi(description = prevPost?.description, gifUrl = prevPost?.gifUrl)
+            showPrevBtnIfNeed()
         }
     }
 

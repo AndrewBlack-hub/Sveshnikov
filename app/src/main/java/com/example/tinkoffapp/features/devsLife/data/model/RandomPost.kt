@@ -1,6 +1,12 @@
 package com.example.tinkoffapp.features.devsLife.data.model
 
-data class RandomPostModel(
+
+data class BaseResponse(
+    val result: List<BasePostModel>? = null,
+    val totalCount: Int? = null
+)
+
+data class BasePostModel(
     val id: Int? = null,
     val description: String? = null,
     val votes: Int? = null,

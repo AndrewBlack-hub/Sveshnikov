@@ -1,8 +1,8 @@
 package com.example.tinkoffapp.features.devsLife.domain
 
-import com.example.tinkoffapp.features.devsLife.data.model.RandomPostModel
+import com.example.tinkoffapp.features.devsLife.data.model.BasePostModel
 
-fun RandomPostModel.mapToPresentation(): RandomPostDomain {
+fun BasePostModel.mapToPresentation(): BasePostDomain {
     var buildTrueUrl = ""
     // По запросу приходит gifUrl в виде: "http://...", который глайд не может обработать без ошибки
     // Поэтому меняем "http" на "https", который glide успешно обрабатывает и выдает в результате
@@ -15,7 +15,7 @@ fun RandomPostModel.mapToPresentation(): RandomPostDomain {
         }
     }
 
-    return RandomPostDomain(
+    return BasePostDomain(
         id = this.id,
         description = this.description,
         gifUrl = buildTrueUrl

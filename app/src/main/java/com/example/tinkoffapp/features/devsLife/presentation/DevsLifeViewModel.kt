@@ -9,6 +9,8 @@ import kotlinx.coroutines.launch
 
 class DevsLifeViewModel(private val useCase: DevsLifeUseCase) : ViewModel() {
     val randomPostLiveData by lazyLiveData<RandomPostDomain?>()
+    val randomPostList: MutableList<RandomPostDomain?> = mutableListOf()
+    var position = 0
 
     fun getRandomPost() {
         viewModelScope.launch {

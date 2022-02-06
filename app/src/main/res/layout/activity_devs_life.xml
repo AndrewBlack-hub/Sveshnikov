@@ -4,16 +4,154 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/black10"
     tools:context=".features.devsLife.presentation.DevsLifeActivity">
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/titleView"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:fontFamily="@font/roboto_bold"
+        android:gravity="center"
+        android:text="@string/developers_life"
+        android:textColor="@color/black"
+        android:textSize="28sp"
+        app:layout_constraintBottom_toTopOf="@id/tabLayout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/tabLayout"
+        style="@style/AppTabTransparent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/titleView"
+        app:tabGravity="center"
+        tools:background="@color/black50" />
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/cardView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_margin="8dp"
+        android:background="@drawable/shadow_card_view"
+        android:elevation="10dp"
+        app:cardCornerRadius="30dp"
+        app:layout_constraintBottom_toTopOf="@id/nextPostBtn"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tabLayout">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/imageView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:indeterminateTint="@color/black"
+            android:indeterminateTintMode="multiply"
+            android:visibility="invisible" />
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:background="@drawable/grad_overlay"
+            android:fontFamily="@font/roboto_bold"
+            android:gravity="center"
+            android:minHeight="70dp"
+            android:paddingHorizontal="16dp"
+            android:paddingVertical="12dp"
+            android:textColor="@color/white"
+            android:textSize="24sp"
+            app:layout_constraintBottom_toTopOf="@id/nextPostBtn"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:text="asdasdadasdasdasdasdasdaasdasdasdasdasdasdasdasdasdasdasd" />
+
+    </com.google.android.material.card.MaterialCardView>
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/errorIc"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_marginBottom="30dp"
+        android:src="@drawable/ic_internet_disable"
+        app:layout_constraintBottom_toTopOf="@id/nextPostBtn"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tabLayout" />
+
+    <TextView
+        android:id="@+id/errorInfo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="16dp"
+        android:gravity="center"
+        android:text="@string/error_no_internet_info"
+        android:textColor="@color/black"
+        app:layout_constraintEnd_toEndOf="@id/errorIc"
+        app:layout_constraintStart_toStartOf="@id/errorIc"
+        app:layout_constraintTop_toBottomOf="@id/errorIc" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/tryAgainBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hello World!"
+        android:layout_marginTop="16dp"
+        android:text="Повторить"
+        android:textAllCaps="false"
+        app:layout_constraintEnd_toEndOf="@id/errorInfo"
+        app:layout_constraintStart_toStartOf="@id/errorInfo"
+        app:layout_constraintTop_toBottomOf="@id/errorInfo" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/prevPostBtn"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/ic_next"
+        android:rotation="180"
+        android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintEnd_toStartOf="@id/nextPostBtn"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/nextPostBtn"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/ic_next"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/prevPostBtn" />
+
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/error_group"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="invisible"
+        app:constraint_referenced_ids="errorIc,errorInfo,tryAgainBtn" />
+
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/content_group"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="visible"
+        app:constraint_referenced_ids="cardView,nextPostBtn" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

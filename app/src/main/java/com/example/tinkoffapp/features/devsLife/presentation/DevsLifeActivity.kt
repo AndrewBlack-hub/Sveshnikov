@@ -42,13 +42,22 @@ class DevsLifeActivity : AppCompatActivity() {
     private fun loadPostsList() {
         when (viewModel.type) {
             LATEST -> {
-                viewModel.getPostsList(type = viewModel.type, page = viewModel.latestPage.toString())
+                viewModel.getPostsList(
+                    type = viewModel.type,
+                    page = viewModel.latestPage.toString()
+                )
             }
             TOP -> {
-                viewModel.getPostsList(type = viewModel.type, page = viewModel.topPage.toString())
+                viewModel.getPostsList(
+                    type = viewModel.type,
+                    page = viewModel.topPage.toString()
+                )
             }
             HOT -> {
-                viewModel.getPostsList(type = viewModel.type, page = viewModel.hotPage.toString())
+                viewModel.getPostsList(
+                    type = viewModel.type,
+                    page = viewModel.hotPage.toString()
+                )
             }
             else -> {//random
                 loadRandomPost()
@@ -68,7 +77,8 @@ class DevsLifeActivity : AppCompatActivity() {
                     LATEST -> {
                         viewModel.latestList.addAll(data)
                         updateUi(
-                            description = viewModel.latestList[viewModel.latestListPosition]?.description,
+                            description = viewModel
+                                .latestList[viewModel.latestListPosition]?.description,
                             gifUrl = viewModel.latestList[viewModel.latestListPosition]?.gifUrl
                         )
                     }
@@ -87,13 +97,9 @@ class DevsLifeActivity : AppCompatActivity() {
                         )
                     }
                 }
-            } else if (data != null && data.isEmpty()) {//data.size == 0
+            } else if (data != null && data.isEmpty()) { //data.size == 0
                 //С сервера пришел пустой список
-                binding.errorIc.setImageDrawable(getDrawable(R.drawable.ic_error))
-                binding.errorGroup.visibility = View.VISIBLE
-                binding.errorInfo.text = getString(R.string.empty_list_info)
-                binding.contentGroup.visibility = View.INVISIBLE
-                binding.prevPostBtn.visibility = View.INVISIBLE
+                dataEmptyState()
             } else {// data == null
                 //Проблемы с интернетом
                 internetHasProblem()
@@ -111,6 +117,14 @@ class DevsLifeActivity : AppCompatActivity() {
                 internetHasProblem()
             }
         }
+    }
+
+    private fun dataEmptyState() {
+        binding.errorIc.setImageDrawable(getDrawable(R.drawable.ic_error))
+        binding.errorGroup.visibility = View.VISIBLE
+        binding.errorInfo.text = getString(R.string.empty_list_info)
+        binding.contentGroup.visibility = View.INVISIBLE
+        binding.prevPostBtn.visibility = View.INVISIBLE
     }
 
     private fun showContentView() {
@@ -140,7 +154,8 @@ class DevsLifeActivity : AppCompatActivity() {
                     LATEST -> {
                         if (!viewModel.latestList.isNullOrEmpty())
                             updateUi(
-                                description = viewModel.latestList[viewModel.latestListPosition]?.description,
+                                description = viewModel
+                                    .latestList[viewModel.latestListPosition]?.description,
                                 gifUrl = viewModel.latestList[viewModel.latestListPosition]?.gifUrl
                             )
                         else {
@@ -150,7 +165,8 @@ class DevsLifeActivity : AppCompatActivity() {
                     TOP -> {
                         if (!viewModel.topList.isNullOrEmpty())
                             updateUi(
-                                description = viewModel.topList[viewModel.topListPosition]?.description,
+                                description = viewModel
+                                    .topList[viewModel.topListPosition]?.description,
                                 gifUrl = viewModel.topList[viewModel.topListPosition]?.gifUrl
                             )
                         else {
@@ -160,7 +176,8 @@ class DevsLifeActivity : AppCompatActivity() {
                     HOT -> {
                         if (!viewModel.hotList.isNullOrEmpty())
                             updateUi(
-                                description = viewModel.hotList[viewModel.hotListPosition]?.description,
+                                description = viewModel
+                                    .hotList[viewModel.hotListPosition]?.description,
                                 gifUrl = viewModel.hotList[viewModel.hotListPosition]?.gifUrl
                             )
                         else {
@@ -170,7 +187,8 @@ class DevsLifeActivity : AppCompatActivity() {
                     RANDOM -> {
                         if (!viewModel.randomPostList.isNullOrEmpty())
                             updateUi(
-                                description = viewModel.randomPostList[viewModel.position]?.description,
+                                description = viewModel
+                                    .randomPostList[viewModel.position]?.description,
                                 gifUrl = viewModel.randomPostList[viewModel.position]?.gifUrl
                             )
                         else {
@@ -179,12 +197,8 @@ class DevsLifeActivity : AppCompatActivity() {
                     }
                 }
             }
-
-            override fun onTabUnselected(tab: TabLayout.Tab?) {
-            }
-
-            override fun onTabReselected(tab: TabLayout.Tab?) {
-            }
+            override fun onTabUnselected(tab: TabLayout.Tab?) {}
+            override fun onTabReselected(tab: TabLayout.Tab?) {}
         })
     }
 
@@ -270,7 +284,8 @@ class DevsLifeActivity : AppCompatActivity() {
     }
 
     private fun onClickNextRandom() {
-        if (viewModel.position < viewModel.randomPostList.size - 1) {//если позиция != последнему элементу в списке
+        //если позиция != последнему элементу в списке
+        if (viewModel.position < viewModel.randomPostList.size - 1) {
             showNextPostInCache()
         } else {// позиция равна последнему элементу в списке
             // делаем запрос на новый контент
@@ -282,7 +297,8 @@ class DevsLifeActivity : AppCompatActivity() {
     }
 
     private fun onClickNextTop() {
-        if (viewModel.topListPosition < viewModel.topList.size - 1) {//если позиция != последнему элементу в списке
+        //если позиция != последнему элементу в списке
+        if (viewModel.topListPosition < viewModel.topList.size - 1) {
             showNextPostInCache()
         } else {// позиция равна последнему элементу в списке
             // делаем запрос на новый контент
